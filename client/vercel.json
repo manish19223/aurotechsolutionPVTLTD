@@ -1,10 +1,10 @@
 {
   "functions": {
     "api/contact.js": {
-      "runtime": "nodejs18.x"
+      "runtime": "nodejs@18"
     },
     "api/career.js": {
-      "runtime": "nodejs18.x"
+      "runtime": "nodejs@18"
     }
   },
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
