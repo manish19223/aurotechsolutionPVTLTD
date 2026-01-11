@@ -1,13 +1,5 @@
 {
   "version": 2,
-  "functions": {
-    "api/contact.js": {
-      "runtime": "@vercel/node"
-    },
-    "api/career.js": {
-      "runtime": "@vercel/node"
-    }
-  },
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
   "headers": [
     {
