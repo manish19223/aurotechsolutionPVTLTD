@@ -103,6 +103,15 @@ export default async function handler(req, res) {
       }
     }
 
+    // Validate environment variables
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_APP_PASSWORD) {
+      console.error("❌ Missing email environment variables");
+      return res.status(500).json({
+        success: false,
+        message: "Server configuration error. Please contact administrator.",
+      });
+    }
+
     // Create transporter
     const transporter = nodemailer.createTransport({
       service: "gmail",

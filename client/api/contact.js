@@ -10,6 +10,15 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Safety check for req.body
+    if (!req.body || typeof req.body !== "object") {
+      console.error("❌ Invalid request body:", req.body);
+      return res.status(400).json({
+        success: false,
+        message: "Invalid request format. Expected JSON body.",
+      });
+    }
+
     const { name, email, mobile, message, subject } = req.body;
 
     // Validate required fields
@@ -42,6 +51,15 @@ export default async function handler(req, res) {
       return res.status(400).json({
         success: false,
         message: "Message must be at least 10 characters long.",
+      });
+    }
+
+    // Validate environment variables
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_APP_PASSWORD) {
+      console.error("❌ Missing email environment variables");
+      return res.status(500).json({
+        success: false,
+        message: "Server configuration error. Please contact administrator.",
       });
     }
 
@@ -123,21 +141,29 @@ export default async function handler(req, res) {
     };
 
     // Send email
-    await transporter.sendMail(mailOptions);
-
-    console.log(
-      `✅ Contact form email sent successfully from ${name} (${email})`
-    );
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(
+        `✅ Contact form email sent successfully from ${name} (${email})`
+      );
+    } catch (emailError) {
+      console.error("❌ Email sending failed:", emailError.message);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to send email. Please check email configuration.",
+      });
+    }
 
     res.status(200).json({
       success: true,
       message: "Thank you for your message! We will get back to you soon.",
     });
   } catch (error) {
-    console.error("❌ Contact form error:", error);
+    console.error("❌ Contact form error:", error.message);
     res.status(500).json({
       success: false,
       message:
+        error.message ||
         "Sorry, there was an error sending your message. Please try again later.",
     });
   }

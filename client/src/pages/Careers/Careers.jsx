@@ -291,7 +291,7 @@ export default function Career() {
     submitData.append("email", formData.email);
     submitData.append("mobile", formData.mobile); // API expects 'mobile'
     submitData.append("position", formData.position);
-    submitData.append("about", formData.about); // API expects 'about' for experience/message
+    submitData.append("experience", formData.about); // API expects 'experience' field
 
     if (formData.resume) {
       submitData.append("resume", formData.resume);
