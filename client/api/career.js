@@ -149,6 +149,11 @@ export default async function handler(req, res) {
     }
 
     // Validate environment variables
+    console.log("Checking environment variables:");
+    console.log("EMAIL_USER exists:", !!process.env.EMAIL_USER);
+    console.log("EMAIL_APP_PASSWORD exists:", !!process.env.EMAIL_APP_PASSWORD);
+    console.log("RECIPIENT_EMAIL:", process.env.RECIPIENT_EMAIL || "aurotechsolutionspvtltd@gmail.com");
+
     if (!process.env.EMAIL_USER || !process.env.EMAIL_APP_PASSWORD) {
       console.error("❌ Missing email environment variables");
       return res.status(500).json({
@@ -267,11 +272,19 @@ export default async function handler(req, res) {
     }
 
     // Send email
-    await transporter.sendMail(mailOptions);
-
-    console.log(
-      `✅ Career application email sent successfully from ${name} (${email}) for position: ${position}`
-    );
+    console.log("Attempting to send email...");
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log(
+        `✅ Career application email sent successfully from ${name} (${email}) for position: ${position}`
+      );
+    } catch (emailError) {
+      console.error("❌ Email sending failed:", emailError);
+      return res.status(500).json({
+        success: false,
+        message: "Failed to send email. Please try again later.",
+      });
+    }
 
     res.status(200).json({
       success: true,
