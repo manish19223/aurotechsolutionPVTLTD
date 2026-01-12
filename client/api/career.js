@@ -51,17 +51,17 @@ export default async function handler(req, res) {
           : fields.position,
         experience: Array.isArray(fields.about)
           ? fields.about[0]
-          : (fields.about || ""), // Frontend sends 'about' field
+          : fields.about || "", // Frontend sends 'about' field
         message: Array.isArray(fields.message)
           ? fields.message[0]
-          : (fields.message || ""),
+          : fields.message || "",
         resume: files.resume?.[0] || files.resume,
       };
 
       console.log("Parsed formData:", formData);
     } else {
       // Handle JSON data
-      formData = req.body;
+      formData = req.body || {};
     }
 
     const { name, email, mobile, position, experience, message, resume } =
