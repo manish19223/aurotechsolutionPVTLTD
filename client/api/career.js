@@ -49,9 +49,9 @@ export default async function handler(req, res) {
         position: Array.isArray(fields.position)
           ? fields.position[0]
           : fields.position,
-        experience: Array.isArray(fields.experience)
-          ? fields.experience[0]
-          : fields.experience,
+        experience: Array.isArray(fields.about)
+          ? fields.about[0]
+          : fields.about, // Frontend sends 'about' field
         message: Array.isArray(fields.message)
           ? fields.message[0]
           : fields.message,
@@ -78,7 +78,16 @@ export default async function handler(req, res) {
     });
 
     // Validate required fields
-    console.log("Validating fields - name:", !!name, "email:", !!email, "mobile:", !!mobile, "position:", !!position);
+    console.log(
+      "Validating fields - name:",
+      !!name,
+      "email:",
+      !!email,
+      "mobile:",
+      !!mobile,
+      "position:",
+      !!position
+    );
 
     const missingFields = [];
     if (!name) missingFields.push("name");
