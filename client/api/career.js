@@ -3,8 +3,10 @@ export const config = {
     bodyParser: false,
   },
 };
+
 import nodemailer from "nodemailer";
 import multiparty from "multiparty";
+
 export default async function handler(req, res) {
   // Only allow POST requests
   if (req.method !== "POST") {
@@ -15,6 +17,9 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log("Request method:", req.method);
+    console.log("Content-Type:", req.headers["content-type"]);
+
     let formData = {};
 
     // Check if it's multipart/form-data
@@ -33,6 +38,10 @@ export default async function handler(req, res) {
         });
       });
 
+      // Debug: Log raw fields and files
+      console.log("Raw fields received:", fields);
+      console.log("Raw files received:", Object.keys(files));
+
       formData = {
         name: Array.isArray(fields.name) ? fields.name[0] : fields.name,
         email: Array.isArray(fields.email) ? fields.email[0] : fields.email,
@@ -40,14 +49,16 @@ export default async function handler(req, res) {
         position: Array.isArray(fields.position)
           ? fields.position[0]
           : fields.position,
-        experience: Array.isArray(fields.experience)
-          ? fields.experience[0]
-          : fields.experience,
+        experience: Array.isArray(fields.about)
+          ? fields.about[0]
+          : fields.about, // Frontend sends 'about' field
         message: Array.isArray(fields.message)
           ? fields.message[0]
           : fields.message,
         resume: files.resume?.[0] || files.resume,
       };
+
+      console.log("Parsed formData:", formData);
     } else {
       // Handle JSON data
       formData = req.body;
@@ -67,11 +78,24 @@ export default async function handler(req, res) {
     });
 
     // Validate required fields
+    console.log(
+      "Validating fields - name:",
+      !!name,
+      "email:",
+      !!email,
+      "mobile:",
+      !!mobile,
+      "position:",
+      !!position
+    );
+
     const missingFields = [];
     if (!name) missingFields.push("name");
     if (!email) missingFields.push("email");
     if (!mobile) missingFields.push("mobile");
     if (!position) missingFields.push("position");
+
+    console.log("Missing fields:", missingFields);
 
     if (missingFields.length > 0) {
       return res.status(400).json({
