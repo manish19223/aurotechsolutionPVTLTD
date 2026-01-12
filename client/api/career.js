@@ -51,10 +51,10 @@ export default async function handler(req, res) {
           : fields.position,
         experience: Array.isArray(fields.about)
           ? fields.about[0]
-          : fields.about, // Frontend sends 'about' field
+          : (fields.about || ""), // Frontend sends 'about' field
         message: Array.isArray(fields.message)
           ? fields.message[0]
-          : fields.message,
+          : (fields.message || ""),
         resume: files.resume?.[0] || files.resume,
       };
 
@@ -238,7 +238,7 @@ export default async function handler(req, res) {
                 <div class="value">${position}</div>
               </div>
               ${
-                experience
+                experience && experience.trim()
                   ? `
               <div class="field">
                 <div class="label">📝 Experience/About:</div>
@@ -248,7 +248,7 @@ export default async function handler(req, res) {
                   : ""
               }
               ${
-                message
+                message && message.trim()
                   ? `
               <div class="field">
                 <div class="label">💬 Additional Message:</div>
