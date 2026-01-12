@@ -73,27 +73,30 @@ const Portfolio = ({ showBanner = true }) => {
 
       {/* ================= BANNER ================= */}
       {showBanner && (
-        <section className="relative w-full h-[420px] mt-24 overflow-hidden">
+        <section className="relative w-full h-[300px] md:h-[380px] lg:h-[420px] mt-16 md:mt-20 lg:mt-24 overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${servicesBanner})` }}
           />
-          <div className="absolute inset-0" />
+          <div className="absolute inset-0 bg-black/40 md:bg-black/30" />
 
-          <div className="relative z-10 max-w-7xl mx-auto h-full flex items-center px-6">
+          <div className="relative z-10 max-w-7xl mx-auto h-full flex items-center px-4 sm:px-6 lg:px-8">
             <div>
-              <h1 className="text-white text-5xl font-bold mb-4">
+              <h1 className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 md:mb-4">
                 Our Showcase
               </h1>
 
-              <div className="flex items-center gap-2 mb-6">
+              <div className="flex items-center gap-2 mb-4 md:mb-6">
                 <span className="w-2 h-2 bg-pink-600 rounded-full" />
                 <span className="w-2 h-2 bg-pink-600 rounded-full" />
-                <span className="w-12 h-0.5 bg-white/40" />
+                <span className="w-8 md:w-12 h-0.5 bg-white/40" />
               </div>
 
-              <div className="text-sm">
-                <Link to="/" className="text-pink-500 font-semibold">
+              <div className="text-xs md:text-sm">
+                <Link
+                  to="/"
+                  className="text-pink-400 hover:text-pink-300 font-semibold transition-colors"
+                >
                   Home
                 </Link>
                 <span className="text-white mx-2">/</span>
@@ -105,17 +108,17 @@ const Portfolio = ({ showBanner = true }) => {
       )}
 
       {/* ================= FILTER ================= */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-4 mb-14">
+      <section className="py-12 md:py-16 lg:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8 md:mb-12 lg:mb-14">
             {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActive(cat)}
-                className={`px-6 py-2 rounded-md text-sm font-semibold transition-all duration-300
+                className={`px-4 md:px-6 py-2 md:py-2.5 rounded-md text-xs md:text-sm font-semibold transition-all duration-300 whitespace-nowrap
                   ${
                     active === cat
-                      ? "bg-linear-to-r from-pink-500 to-purple-600 text-white shadow-lg"
+                      ? "bg-linear-to-r from-pink-500 to-purple-600 text-white shadow-lg scale-105"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
               >
@@ -125,39 +128,40 @@ const Portfolio = ({ showBanner = true }) => {
           </div>
 
           {/* ================= GRID ================= */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {filtered.map((item, i) => (
               <div
                 key={i}
                 data-aos="fade-up"
                 data-aos-delay={i * 100}
-                className="group relative rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100"
+                className="group relative rounded-lg md:rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100"
               >
                 {/* IMAGE CONTAINER */}
-                <div className="relative w-full h-[280px] overflow-hidden">
+                <div className="relative w-full h-[240px] md:h-[280px] overflow-hidden">
                   <img
                     src={item.img}
                     alt={item.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
                   />
                   {/* Gradient overlay for better text readability */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
 
                 {/* HOVER OVERLAY */}
-                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end justify-center pb-6">
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end justify-center pb-4 md:pb-6">
                   <div
                     className="text-center transform translate-y-4 opacity-0
                                group-hover:translate-y-0 group-hover:opacity-100
-                               transition-all duration-500 delay-100"
+                               transition-all duration-500 delay-100 px-4"
                   >
-                    <h3 className="text-white text-xl font-bold mb-2 px-4">
+                    <h3 className="text-white text-lg md:text-xl font-bold mb-2 leading-tight">
                       {item.title}
                     </h3>
-                    <p className="text-white/90 text-sm mb-3">
+                    <p className="text-white/90 text-xs md:text-sm mb-3">
                       {item.category}
                     </p>
-                    <FiSearch className="text-white text-2xl mx-auto" />
+                    <FiSearch className="text-white text-xl md:text-2xl mx-auto" />
                   </div>
                 </div>
               </div>

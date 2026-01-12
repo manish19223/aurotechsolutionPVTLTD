@@ -40,7 +40,7 @@ const EVENTS = [
     desc: "Meeting and onboarding our very first business client successfully.",
     image: FirstClientImg,
   },
-   {
+  {
     id: 4,
     title: "Team Inaugation",
     date: "05",
@@ -57,7 +57,7 @@ export default function OurEvents() {
   const navigate = useNavigate();
 
   return (
-    <section className="relative py-24 bg-pink-100 overflow-hidden">
+    <section className="relative py-16 md:py-20 lg:py-24 bg-pink-100 overflow-hidden">
       {/* ===== LIGHT BACKGROUND GLOW (DESKTOP ONLY) ===== */}
       <div className="absolute inset-0 pointer-events-none hidden lg:block">
         <div
@@ -72,11 +72,11 @@ export default function OurEvents() {
         />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-5">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ===== HEADING ===== */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-10 md:mb-14">
           <h2
-            className="text-4xl md:text-5xl font-bold
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold
             bg-linear-to-r from-[#2A2AFF] via-[#6A1B9A] to-[#8A2BE2]
             bg-clip-text text-transparent"
           >
@@ -84,44 +84,43 @@ export default function OurEvents() {
           </h2>
 
           <div className="mt-4 flex items-center justify-center gap-2">
-            <span className="w-10 h-px bg-black/20" />
+            <span className="w-8 md:w-10 h-px bg-black/20" />
             <span className="w-2 h-2 rounded-full bg-[#6A1B9A]" />
             <span className="w-2 h-2 rounded-full bg-[#8A2BE2]" />
-            <span className="w-10 h-px bg-black/20" />
+            <span className="w-8 md:w-10 h-px bg-black/20" />
           </div>
 
-          <p className="mt-4 text-gray-500 max-w-xl mx-auto">
+          <p className="mt-4 text-gray-500 text-sm md:text-base max-w-xl mx-auto px-4">
             Celebrating milestones, teamwork and memorable moments at Auro Tech
             Solutions.
           </p>
         </div>
 
         {/* ===== EVENTS ===== */}
-        <div className="space-y-14">
+        <div className="space-y-12 md:space-y-16 lg:space-y-20">
           {EVENTS.map((ev, index) => (
             <article
               key={ev.id}
               className={`flex flex-col ${
                 index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
-              } gap-10 items-center`}
+              } gap-8 md:gap-10 lg:gap-12 items-center`}
             >
               {/* IMAGE */}
-              <div className="w-full lg:w-2/5">
+              <div className="w-full lg:w-2/5 order-2 lg:order-1">
                 <div className="relative overflow-hidden rounded-xl shadow-md">
                   <img
                     src={ev.image}
                     alt={ev.title}
                     loading="lazy"
-                    className="w-full h-64 object-cover
+                    className="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover
                     transition-transform duration-500
-                    will-change-transform
                     lg:hover:scale-105"
                   />
 
                   {/* DATE BADGE */}
-                  <div className="absolute top-5 left-5 bg-white/95 backdrop-blur-sm px-5 py-3 rounded-xl shadow-md">
+                  <div className="absolute top-3 left-3 md:top-5 md:left-5 bg-white/95 backdrop-blur-sm px-3 md:px-5 py-2 md:py-3 rounded-lg md:rounded-xl shadow-md">
                     <div className="text-center leading-tight">
-                      <span className="text-xl font-bold text-[#2A2AFF] block">
+                      <span className="text-lg md:text-xl font-bold text-[#2A2AFF] block">
                         {ev.date}
                       </span>
                       <span className="text-xs font-semibold text-gray-600 uppercase">
@@ -132,10 +131,10 @@ export default function OurEvents() {
                   </div>
 
                   {/* EVENT BADGE */}
-                  <div className="absolute top-5 right-5">
+                  <div className="absolute top-3 right-3 md:top-5 md:right-5">
                     <span
                       className="bg-linear-to-r from-[#2A2AFF] to-[#8A2BE2]
-                    text-white px-4 py-1.5 rounded-full text-xs font-semibold shadow-sm"
+                    text-white px-3 md:px-4 py-1 md:py-1.5 rounded-full text-xs font-semibold shadow-sm"
                     >
                       EVENT
                     </span>
@@ -144,25 +143,25 @@ export default function OurEvents() {
               </div>
 
               {/* CONTENT */}
-              <div className="flex-1 text-center lg:text-left space-y-4">
+              <div className="flex-1 text-center lg:text-left space-y-3 md:space-y-4 order-1 lg:order-2">
                 <div>
-                  <h3 className="text-2xl lg:text-3xl font-bold text-gray-900">
+                  <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">
                     {ev.title}
                   </h3>
                   <div
-                    className="w-16 h-1 bg-linear-to-r from-[#2A2AFF] to-[#8A2BE2]
+                    className="w-12 md:w-16 h-1 bg-linear-to-r from-[#2A2AFF] to-[#8A2BE2]
                   rounded-full mx-auto lg:mx-0 mt-2"
                   />
                 </div>
 
-                <p className="text-gray-600 leading-relaxed max-w-md mx-auto lg:mx-0">
+                <p className="text-gray-600 leading-relaxed text-sm md:text-base max-w-md mx-auto lg:mx-0 px-4 lg:px-0">
                   {ev.desc}
                 </p>
 
                 {/* LOCATION */}
                 <div className="flex items-center justify-center lg:justify-start gap-2 text-gray-500">
                   <svg
-                    className="w-5 h-5 text-[#2A2AFF]"
+                    className="w-4 h-4 md:w-5 md:h-5 text-[#2A2AFF] flex-shrink-0"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -172,7 +171,7 @@ export default function OurEvents() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <span className="text-sm font-medium">
+                  <span className="text-xs md:text-sm font-medium text-center lg:text-left">
                     {ev.location.split(",")[0]}
                   </span>
                 </div>
@@ -181,15 +180,15 @@ export default function OurEvents() {
                 <div className="pt-2">
                   <button
                     onClick={() => navigate("/events")}
-                    className="inline-flex items-center gap-2 px-6 py-3
+                    className="inline-flex items-center gap-2 px-5 md:px-6 py-2.5 md:py-3
                     bg-linear-to-r from-[#2A2AFF] to-[#8A2BE2]
                     text-white font-semibold rounded-full
                     transition-all duration-300
-                    hover:shadow-md lg:hover:scale-105"
+                    hover:shadow-md hover:scale-105 text-sm md:text-base"
                   >
                     Discover More
                     <svg
-                      className="w-5 h-5"
+                      className="w-4 h-4 md:w-5 md:h-5"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

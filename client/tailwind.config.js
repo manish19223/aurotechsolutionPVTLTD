@@ -3,8 +3,25 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        heading: ["Poppins", "system-ui", "sans-serif"],
-        body: ["Open Sans", "system-ui", "sans-serif"],
+        sans: [
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "SF Pro Display",
+          "SF Pro Text",
+          "Segoe UI",
+          "Roboto",
+          "Oxygen",
+          "Ubuntu",
+          "Cantarell",
+          "Open Sans",
+          "Helvetica Neue",
+          "sans-serif",
+        ],
+      },
+      fontWeight: {
+        400: "400",
+        500: "500",
+        600: "600",
       },
       colors: {
         primary: {

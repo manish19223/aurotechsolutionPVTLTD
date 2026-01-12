@@ -74,18 +74,20 @@ export default function HowWeWork1() {
   const current = steps[active] ?? steps[0];
 
   return (
-    <section ref={sectionRef} className="py-24 bg-green-50">
+    <section ref={sectionRef} className="py-16 md:py-20 lg:py-24 bg-green-50">
       {/* ===========================
           TITLE
       ============================ */}
-      <div className="text-center mb-16">
-        <h2 className="text-4xl font-bold">
+      <div className="text-center mb-12 md:mb-16">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">
           Our{" "}
           <span className="bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
             Working Process
           </span>
         </h2>
-        <p className="mt-4 text-gray-500">Based on 6 Levels of Unit</p>
+        <p className="mt-4 text-gray-500 text-sm md:text-base">
+          Based on 6 Levels of Unit
+        </p>
       </div>
 
       {/* ===========================
@@ -128,23 +130,23 @@ export default function HowWeWork1() {
       {/* ===========================
           MOBILE VERTICAL TIMELINE
       ============================ */}
-      <div className="md:hidden max-w-xl mx-auto px-6 mb-10">
-        <div className="border-l-2 border-gray-200 pl-6 space-y-8">
+      <div className="md:hidden max-w-xl mx-auto px-4 sm:px-6 mb-8 md:mb-10">
+        <div className="border-l-2 border-gray-200 pl-4 md:pl-6 space-y-6 md:space-y-8">
           {steps.map((step, i) => (
             <button
               key={step.id}
               onClick={() => setActive(i)}
-              className="flex items-start gap-4 text-left"
+              className="flex items-start gap-3 md:gap-4 text-left w-full"
             >
               <div
-                className={`w-4 h-4 mt-1 rounded-full ${
+                className={`w-3 h-3 md:w-4 md:h-4 mt-1 rounded-full flex-shrink-0 ${
                   i === active
                     ? "bg-gradient-to-r from-pink-500 to-purple-600"
                     : "bg-gray-300"
                 }`}
               />
               <span
-                className={`text-sm font-medium ${
+                className={`text-xs md:text-sm font-medium leading-tight ${
                   i === active ? "text-black" : "text-gray-400"
                 }`}
               >
@@ -158,15 +160,15 @@ export default function HowWeWork1() {
       {/* ===========================
           GLASS CARD
       ============================ */}
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="relative rounded-3xl p-10 backdrop-blur-xl bg-white/30 border border-white/40 shadow-xl transition-all duration-500">
-          <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-pink-500/20 to-purple-600/20 blur-2xl -z-10" />
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="relative rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-10 backdrop-blur-xl bg-white/30 border border-white/40 shadow-xl transition-all duration-500">
+          <div className="absolute inset-0 rounded-2xl md:rounded-3xl bg-gradient-to-r from-pink-500/20 to-purple-600/20 blur-2xl -z-10" />
 
-          <h3 className="text-2xl font-bold text-center bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
+          <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-center bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">
             {current.title}
           </h3>
 
-          <p className="mt-6 text-center text-gray-700 leading-relaxed">
+          <p className="mt-4 md:mt-6 text-center text-gray-700 leading-relaxed text-sm md:text-base px-2">
             {current.desc}
           </p>
         </div>

@@ -60,16 +60,32 @@ const SERVICES = [
   },
 ];
 
-const PER_PAGE = 4;
+const PER_PAGE_DESKTOP = 4;
+const PER_PAGE_MOBILE = 1;
 
 export default function ServicesSlider() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const PER_PAGE = isMobile ? PER_PAGE_MOBILE : PER_PAGE_DESKTOP;
+
   const pages = useMemo(() => {
     const chunks = [];
     for (let i = 0; i < SERVICES.length; i += PER_PAGE) {
       chunks.push(SERVICES.slice(i, i + PER_PAGE));
     }
     return chunks;
-  }, []);
+  }, [PER_PAGE]);
 
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -88,21 +104,34 @@ export default function ServicesSlider() {
   const goTo = (idx) => setActive(idx);
 
   return (
-    <section className="bg-pink-100 py-24">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="relative bg-linear-to-br from-pink-100 via-rose-50 to-purple-100 py-16 md:py-20 lg:py-24 overflow-hidden">
+      {/* Premium Background Elements */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="absolute top-10 left-5 w-64 h-64 bg-linear-to-r from-rose-400/30 to-pink-400/30 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-10 right-5 w-80 h-80 bg-linear-to-r from-purple-400/30 to-indigo-400/30 rounded-full blur-3xl animate-pulse delay-700"></div>
+        <div className="absolute top-1/3 right-1/4 w-48 h-48 bg-linear-to-r from-pink-400/20 to-rose-400/20 rounded-full blur-2xl animate-pulse delay-1400"></div>
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
         {/* HEADING */}
-        <div className="text-center mb-12">
-          <h2 className="text-5xl font-extrabold tracking-tight">
+        <div className="text-center mb-8 md:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight bg-linear-to-r from-gray-900 via-rose-800 to-purple-800 bg-clip-text text-transparent">
             Our <span className="text-rose-600">Services</span>
           </h2>
           <div className="mt-4 flex items-center justify-center gap-2">
-            <span className="w-10 h-px bg-gray-300" />
-            <span className="w-2 h-2 rounded-full bg-rose-600" />
-            <span className="w-2 h-2 rounded-full bg-rose-600" />
-            <span className="w-2 h-2 rounded-full bg-rose-600" />
-            <span className="w-10 h-px bg-gray-300" />
+            <span className="w-8 md:w-10 h-px bg-linear-to-r from-transparent via-rose-600 to-transparent" />
+            <span className="w-2 h-2 rounded-full bg-rose-600 animate-bounce" />
+            <span
+              className="w-2 h-2 rounded-full bg-rose-600 animate-bounce"
+              style={{ animationDelay: "0.1s" }}
+            />
+            <span
+              className="w-2 h-2 rounded-full bg-rose-600 animate-bounce"
+              style={{ animationDelay: "0.2s" }}
+            />
+            <span className="w-8 md:w-10 h-px bg-linear-to-r from-transparent via-rose-600 to-transparent" />
           </div>
-          <p className="mt-6 text-lg font-semibold text-gray-700">
+          <p className="mt-4 md:mt-6 text-sm md:text-base lg:text-lg font-semibold text-gray-700 max-w-2xl mx-auto px-4">
             Our Special Magical things will be Make Your Project Effectively
           </p>
         </div>
@@ -113,10 +142,10 @@ export default function ServicesSlider() {
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          {/* Fixed horizontal line and end dots */}
-          <div className="absolute inset-x-0 top-22 h-px bg-gray-200 z-0" />
-          <span className="absolute left-0 top-22 w-2 h-2 bg-gray-600 rounded-full -translate-y-1/2 z-0" />
-          <span className="absolute right-0 top-22 w-2 h-2 bg-gray-600 rounded-full -translate-y-1/2 z-0" />
+          {/* Fixed horizontal line and end dots - Hidden on mobile */}
+          <div className="hidden md:block absolute inset-x-0 top-22 h-px bg-gray-200 z-0" />
+          <span className="hidden md:block absolute left-0 top-22 w-2 h-2 bg-gray-600 rounded-full -translate-y-1/2 z-0" />
+          <span className="hidden md:block absolute right-0 top-22 w-2 h-2 bg-gray-600 rounded-full -translate-y-1/2 z-0" />
 
           {/* SLIDER */}
           <div className="overflow-hidden">
@@ -126,64 +155,101 @@ export default function ServicesSlider() {
             >
               {pages.map((page, pageIndex) => (
                 <div key={pageIndex} className="w-full shrink-0">
-                  <div className="flex flex-col md:flex-row gap-8 px-8 items-stretch">
-                    {Array.from({ length: PER_PAGE }).map((_, i) => {
-                      const item = page[i];
-                      if (!item) {
+                  {/* Mobile: Single card slider, Desktop: Grid layout */}
+                  {isMobile ? (
+                    <div className="flex justify-center px-4">
+                      {page.map((item, i) => {
+                        if (!item) return null;
+                        const { Icon, title, desc } = item;
                         return (
                           <div
                             key={i}
-                            className="flex flex-col items-center opacity-0 pointer-events-none md:flex-1"
+                            className="flex flex-col items-center group w-full max-w-sm mx-auto"
                           >
-                            <div className="w-20 h-20" />
-                            <div className="w-2 h-2" />
-                            <div className="h-10 w-px" />
-                            <div className="flex flex-col min-h-80 rounded-2xl border p-8 w-full" />
+                            {/* Icon */}
+                            <div className="w-20 h-20 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-rose-600 group-hover:border-rose-600 transition-colors duration-300 mb-4">
+                              <Icon className="w-10 h-10 text-gray-600 group-hover:text-white transition-colors duration-300" />
+                            </div>
+
+                            {/* Card */}
+                            <div className="flex flex-col flex-1 justify-between items-center rounded-2xl border border-gray-200 bg-white shadow-lg group-hover:shadow-2xl w-full transition-all duration-500 p-6 text-center group-hover:bg-linear-to-b group-hover:from-fuchsia-600 group-hover:via-rose-600 group-hover:to-rose-700 min-h-80">
+                              <div>
+                                <h3 className="text-xl font-extrabold text-gray-900 group-hover:text-white transition-colors duration-300">
+                                  {title}
+                                </h3>
+                                <p className="mt-4 text-base leading-relaxed text-gray-600 group-hover:text-white/90 transition-colors duration-300">
+                                  {desc}
+                                </p>
+                              </div>
+                              <button className="mt-auto inline-block px-8 py-3 rounded-full bg-gray-900 text-white font-medium shadow-lg group-hover:bg-white group-hover:text-gray-900 transition-all duration-300">
+                                Get Quote
+                              </button>
+                            </div>
                           </div>
                         );
-                      }
-                      const { Icon, title, desc } = item;
-                      return (
-                        <div
-                          key={i}
-                          className="flex flex-col items-center group md:flex-1"
-                        >
-                          {/* Icon */}
-                          <div className="w-20 h-20 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-rose-600 group-hover:border-rose-600 transition-colors duration-300">
-                            <Icon className="w-10 h-10 text-gray-600 group-hover:text-white transition-colors duration-300" />
-                          </div>
-
-                          {/* Square dot (small circle) */}
-                          <div className="w-2 h-2 bg-gray-300 rounded-full group-hover:bg-rose-600 transition-colors duration-300 z-10 mt-2" />
-
-                          {/* Lower vertical line */}
-                          <div className="h-10 w-px bg-gray-200 group-hover:bg-rose-600 transition-colors duration-300" />
-
-                          {/* Card */}
-                          <div className="flex flex-col flex-1 justify-between items-center rounded-2xl border border-gray-200 bg-white shadow-md group-hover:shadow-2xl w-full transition-all duration-500 p-8 text-center group-hover:bg-linear-to-b group-hover:from-fuchsia-600 group-hover:via-rose-600 group-hover:to-rose-700">
-                            <div>
-                              <h3 className="text-2xl font-extrabold text-gray-900 group-hover:text-white transition-colors duration-300">
-                                {title}
-                              </h3>
-                              <p className="mt-6 text-base leading-relaxed text-gray-600 group-hover:text-white/90 transition-colors duration-300">
-                                {desc}
-                              </p>
+                      })}
+                    </div>
+                  ) : (
+                    /* Desktop: Grid layout */
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 px-4 md:px-8">
+                      {Array.from({ length: PER_PAGE }).map((_, i) => {
+                        const item = page[i];
+                        if (!item) {
+                          return (
+                            <div
+                              key={i}
+                              className="flex flex-col items-center opacity-0 pointer-events-none"
+                            >
+                              <div className="w-16 h-16 md:w-20 md:h-20" />
+                              <div className="w-2 h-2" />
+                              <div className="h-8 md:h-10 w-px" />
+                              <div className="flex flex-col min-h-64 md:min-h-80 rounded-xl md:rounded-2xl border p-6 md:p-8 w-full" />
                             </div>
-                            <button className="mt-auto inline-block px-12 py-4 rounded-full bg-gray-900 text-white font-medium shadow-lg group-hover:bg-white group-hover:text-gray-900 transition-all duration-300">
-                              Get Quote
-                            </button>
+                          );
+                        }
+                        const { Icon, title, desc } = item;
+                        return (
+                          <div
+                            key={i}
+                            className="flex flex-col items-center group"
+                          >
+                            {/* Icon */}
+                            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center group-hover:bg-rose-600 group-hover:border-rose-600 transition-colors duration-300 mb-3 md:mb-0">
+                              <Icon className="w-8 h-8 md:w-10 md:h-10 text-gray-600 group-hover:text-white transition-colors duration-300" />
+                            </div>
+
+                            {/* Timeline elements - Hidden on mobile */}
+                            <div className="hidden md:flex flex-col items-center">
+                              <div className="w-2 h-2 bg-gray-300 rounded-full group-hover:bg-rose-600 transition-colors duration-300 z-10 mt-2" />
+                              <div className="h-10 w-px bg-gray-200 group-hover:bg-rose-600 transition-colors duration-300" />
+                            </div>
+
+                            {/* Card */}
+                            <div className="flex flex-col flex-1 justify-between items-center rounded-xl md:rounded-2xl border border-gray-200 bg-white shadow-md group-hover:shadow-2xl w-full transition-all duration-500 p-6 md:p-8 text-center group-hover:bg-linear-to-b group-hover:from-fuchsia-600 group-hover:via-rose-600 group-hover:to-rose-700">
+                              <div>
+                                <h3 className="text-lg md:text-xl lg:text-2xl font-extrabold text-gray-900 group-hover:text-white transition-colors duration-300">
+                                  {title}
+                                </h3>
+                                <p className="mt-4 md:mt-6 text-sm md:text-base leading-relaxed text-gray-600 group-hover:text-white/90 transition-colors duration-300">
+                                  {desc}
+                                </p>
+                              </div>
+                              <button className="mt-4 md:mt-auto inline-block px-8 md:px-12 py-3 md:py-4 rounded-full bg-gray-900 text-white font-medium shadow-lg group-hover:bg-white group-hover:text-gray-900 transition-all duration-300 text-sm md:text-base">
+                                Get Quote
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           </div>
 
           {/* DOT INDICATORS */}
-          <div className="mt-16 flex items-center justify-center gap-3">
+          <div className="mt-12 md:mt-16 flex items-center justify-center gap-2 md:gap-3">
             {pages.map((_, i) => (
               <button
                 key={i}
@@ -194,7 +260,9 @@ export default function ServicesSlider() {
                 <span
                   className={`block rounded-full transition-all duration-300 ${
                     i === active
-                      ? "w-8 h-2 bg-purple-600"
+                      ? `w-6 h-2 md:w-8 md:h-2 ${
+                          isMobile ? "bg-rose-600" : "bg-purple-600"
+                        }`
                       : "w-2 h-2 bg-gray-300"
                   }`}
                 />
