@@ -1,5 +1,5 @@
-const nodemailer = require("nodemailer");
-
+import nodemailer from "nodemailer";
+import multiparty from "multiparty";
 export default async function handler(req, res) {
   // Only allow POST requests
   if (req.method !== "POST") {
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     // Check if it's multipart/form-data
     if (req.headers["content-type"]?.includes("multipart/form-data")) {
       // Handle multipart form data with multiparty (better for Vercel)
-      const multiparty = require("multiparty");
+      // const multiparty = require("multiparty");
       const form = new multiparty.Form({
         maxFilesSize: 5 * 1024 * 1024, // 5MB
       });
