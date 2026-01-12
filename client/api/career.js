@@ -134,7 +134,11 @@ export default async function handler(req, res) {
     if (resume) {
       console.log("Validating resume file:");
       console.log("File headers:", resume.headers);
+<<<<<<< HEAD
       const fileMimeType = resume.headers?.['content-type'] || resume.mimetype;
+=======
+      const fileMimeType = resume.headers?.["content-type"] || resume.mimetype;
+>>>>>>> e09fcf6 (Fix: stabilize career form multipart handling and validation)
       console.log("File mimetype:", fileMimeType);
       console.log("File size:", resume.size);
 
