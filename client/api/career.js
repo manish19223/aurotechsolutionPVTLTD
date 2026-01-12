@@ -133,7 +133,9 @@ export default async function handler(req, res) {
     // Validate file if present
     if (resume) {
       console.log("Validating resume file:");
-      console.log("File mimetype:", resume.mimetype);
+      console.log("File headers:", resume.headers);
+      const fileMimeType = resume.headers?.['content-type'] || resume.mimetype;
+      console.log("File mimetype:", fileMimeType);
       console.log("File size:", resume.size);
 
       const allowedTypes = [
@@ -143,7 +145,7 @@ export default async function handler(req, res) {
         "text/plain",
       ];
 
-      if (!allowedTypes.includes(resume.mimetype)) {
+      if (!allowedTypes.includes(fileMimeType)) {
         console.log("❌ Invalid file type");
         return res.status(400).json({
           success: false,
