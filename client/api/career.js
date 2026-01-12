@@ -105,8 +105,12 @@ export default async function handler(req, res) {
     }
 
     // Basic email validation
+    console.log("Validating email:", email);
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    const isValidEmail = emailRegex.test(email);
+    console.log("Email validation result:", isValidEmail);
+    if (!isValidEmail) {
+      console.log("❌ Email validation failed");
       return res.status(400).json({
         success: false,
         message: "Please provide a valid email address",
@@ -114,8 +118,12 @@ export default async function handler(req, res) {
     }
 
     // Basic phone validation (Indian format)
+    console.log("Validating phone:", mobile);
     const phoneRegex = /^[6-9]\d{9}$/;
-    if (!phoneRegex.test(mobile)) {
+    const isValidPhone = phoneRegex.test(mobile);
+    console.log("Phone validation result:", isValidPhone);
+    if (!isValidPhone) {
+      console.log("❌ Phone validation failed");
       return res.status(400).json({
         success: false,
         message: "Please provide a valid 10-digit mobile number",
@@ -124,6 +132,10 @@ export default async function handler(req, res) {
 
     // Validate file if present
     if (resume) {
+      console.log("Validating resume file:");
+      console.log("File mimetype:", resume.mimetype);
+      console.log("File size:", resume.size);
+
       const allowedTypes = [
         "application/pdf",
         "application/msword",
@@ -132,6 +144,7 @@ export default async function handler(req, res) {
       ];
 
       if (!allowedTypes.includes(resume.mimetype)) {
+        console.log("❌ Invalid file type");
         return res.status(400).json({
           success: false,
           message:
@@ -141,18 +154,25 @@ export default async function handler(req, res) {
 
       if (resume.size > 5 * 1024 * 1024) {
         // 5MB
+        console.log("❌ File too large");
         return res.status(400).json({
           success: false,
           message: "File too large. Maximum size is 5MB.",
         });
       }
+      console.log("✅ File validation passed");
+    } else {
+      console.log("No resume file provided");
     }
 
     // Validate environment variables
     console.log("Checking environment variables:");
     console.log("EMAIL_USER exists:", !!process.env.EMAIL_USER);
     console.log("EMAIL_APP_PASSWORD exists:", !!process.env.EMAIL_APP_PASSWORD);
-    console.log("RECIPIENT_EMAIL:", process.env.RECIPIENT_EMAIL || "aurotechsolutionspvtltd@gmail.com");
+    console.log(
+      "RECIPIENT_EMAIL:",
+      process.env.RECIPIENT_EMAIL || "aurotechsolutionspvtltd@gmail.com"
+    );
 
     if (!process.env.EMAIL_USER || !process.env.EMAIL_APP_PASSWORD) {
       console.error("❌ Missing email environment variables");
@@ -286,6 +306,7 @@ export default async function handler(req, res) {
       });
     }
 
+    console.log("✅ All validations passed, returning success response");
     res.status(200).json({
       success: true,
       message:
