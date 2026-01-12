@@ -51,11 +51,27 @@ export default async function handler(req, res) {
     const { name, email, mobile, position, experience, message, resume } =
       formData;
 
+    // Debug logging
+    console.log("Received form data:", {
+      name,
+      email,
+      mobile,
+      position,
+      experience,
+      hasResume: !!resume,
+    });
+
     // Validate required fields
-    if (!name || !email || !mobile || !position) {
+    const missingFields = [];
+    if (!name) missingFields.push("name");
+    if (!email) missingFields.push("email");
+    if (!mobile) missingFields.push("mobile");
+    if (!position) missingFields.push("position");
+
+    if (missingFields.length > 0) {
       return res.status(400).json({
         success: false,
-        message: "Name, email, mobile, and position are required",
+        message: `Missing required fields: ${missingFields.join(", ")}`,
       });
     }
 
